@@ -8,12 +8,12 @@ const mongoose = require('mongoose');
 
 const express = require('express');
 const path = require('path');
-
+const mongo_connect = process.env.MONGO_CONNECT;
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Подключение к базе данных MongoDB
-mongoose.connect("mongodb+srv://danel:0000@cluster0.avoaf.mongodb.net/TodoApp", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongo_connect, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -29,14 +29,14 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Модели пользователей (например, User)
+
 // Модели пользователей (например, User)
 const User = mongoose.model('User', new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  isAdmin: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    isAdmin: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
 }));
 
 
@@ -46,19 +46,13 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Middleware для статических файлов
 app.use(express.static(path.join(__dirname, 'public')));
-function isAuthenticated(req, res, next) {
-  if (req.session.user) {
-      return next();
-  }
-  res.redirect('/login');
-}
 
 // Middleware проверки авторизации
 function isAuthenticated(req, res, next) {
   if (req.session.user) {
       return next();
   }
-  res.redirect('/login');
+  res.redirect('/');
 }
 
 function isAdmin(req, res, next) {
@@ -69,13 +63,20 @@ function isAdmin(req, res, next) {
 }
 
 // Маршруты
-app.get('/', isAuthenticated, isAdmin, (req, res) => {
-  res.render('index', { user: req.session.user });
+app.get('/', (req, res) => {
+  const user = req.session.user || null; // Проверяем, есть ли пользователь
+  res.render('index', { user }); // Передаем пользователя в шаблон
 });
 
 // Маршрут для страницы входа
 app.get('/login', (req, res) => {
   res.render('login', { error: req.session.error });
+  req.session.error = null;  // очищаем ошибку после отображения
+});
+
+// Маршрут для страницы регистраций
+app.get('/register', (req, res) => {
+  res.render('register', { error: req.session.error });
   req.session.error = null;  // очищаем ошибку после отображения
 });
 
@@ -98,32 +99,24 @@ app.post('/login', async (req, res) => {
   }
 });
 
-
 app.get('/bmiCalculator', (req, res) => {
-  res.render('bmiCalculator');
+  res.render('bmiCalculator', { user: req.session.user });
 });
 
 app.get('/cs', (req, res) => {
-  res.render('cs');
+  res.render('cs', { user: req.session.user });
 });
 
 app.get('/games', (req, res) => {
-  res.render('games');
+  res.render('games', { user: req.session.user });
 });
 
-app.get('/Platforms', (req, res) => {
-  res.render('Platforms');
+app.get('/Platforms', (req, res) => { 
+  res.render('Platforms', { user: req.session.user }); 
 });
 
 app.get('/weather', (req, res) => {
-  res.render('weather');
-});
-
-// Маршрут для выхода
-app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-      res.redirect('/login');
-  });
+  res.render('weather', { user: req.session.user });
 });
 
 // Админ панель (требует авторизации)
@@ -137,24 +130,8 @@ app.get('/admin', isAuthenticated, isAdmin, async (req, res) => {
   }
 });
 
-
-// Добавление нового пользователя
-// Добавление нового пользователя
-app.post('/admin/add-user', isAuthenticated, isAdmin, async (req, res) => {
-  const { username, password, isAdmin } = req.body;
-  try {
-      const newUser = new User({ username, password, isAdmin: isAdmin === 'on' });
-      await newUser.save();
-      res.redirect('/admin');
-  } catch (err) {
-      console.error('Error adding user:', err);
-      res.status(500).send('Error adding user');
-  }
-});
-
-
-// Редактирование пользователя
-app.get('/admin/edit-user/:userID', isAuthenticated, async (req, res) => {
+// Редактирование пользователя (требует авторизации)
+app.get('/admin/edit-user/:userID', isAuthenticated, isAdmin, async (req, res) => {
   const userID = req.params.userID;
 
   try {
@@ -169,8 +146,7 @@ app.get('/admin/edit-user/:userID', isAuthenticated, async (req, res) => {
   }
 });
 
-
-// Удаление пользователя
+// Удаление пользователя (требует авторизации)
 app.post('/admin/delete-user/:userID', isAuthenticated, isAdmin, async (req, res) => {
   try {
       await User.findByIdAndDelete(req.params.userID);

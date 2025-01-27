@@ -52,9 +52,9 @@ const renderGames = (games) => {
 
         const rating = game.rating ? game.rating.toFixed(1) : "N/A";
         const genres = game.genres?.map(g => g.name).join(", ") || "N/A";
-        const released = game.released || "Дата не указана"; // Если дата не указана, выводим текст "Дата не указана"
-        const playtime = game.playtime ? game.playtime : "N/A"; // Если плейтайм не указан, выводим N/A
-        const platforms = game.platforms ? game.platforms.map(p => p.platform.name).join(", ") : "N/A"; // Платформы
+        const released = game.released || "Дата не указана"; 
+        const playtime = game.playtime ? game.playtime : "N/A"; 
+        const platforms = game.platforms ? game.platforms.map(p => p.platform.name).join(", ") : "N/A"; 
 
         gameCard.innerHTML = `
             <div class="card h-100">
