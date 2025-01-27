@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Information</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+   <link rel="stylesheet" href="css/games.css">
+   <link rel="stylesheet" href="css/pink.css">
+</head>
+<body>
+    <%- include('bloks/header') -%>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="mt-4">Popular Games</h1>
+
+        <!-- Game Cards -->
+        <div id="games" class="row">
+            <!-- Здесь будут отображаться игры -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center p-4">
+        <p>&copy; 2025 Game Info | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">MadiyarMukhambet MadiOrazbek DanelAkhmetova</a></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="server.js"></script> <!-- подключение вашего JS -->
+    <script>
+        const gamesContainer = document.getElementById('games');
+
+fetch('/games')
+    .then(response => response.json())
+    .then(games => {
+        games.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'col-md-4 game-card';
+            gameCard.innerHTML = `
+                <div class="card">
+                    <img src="${game.background_image}" class="card-img-top" alt="${game.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${game.name}</h5>
+                        <p class="card-text">Rating: ${game.rating}</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            `;
+            gamesContainer.appendChild(gameCard);
+        });
+    })
+    .catch(error => console.error('Error fetching games:', error));
+
+    </script>
+</body>
+</html>

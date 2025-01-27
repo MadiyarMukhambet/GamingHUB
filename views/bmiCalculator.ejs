@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="css\styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/pink.css">
+</head>
+<body>
+    <%- include('bloks/header') -%>
+
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <form id="bmi-form">
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" class="form-control" id="age" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select class="form-control" id="gender" required>
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="units">Units:</label>
+                <select class="form-control" id="units" required>
+                    <option value="metric">Metric (cm, kg)</option>
+                    <option value="imperial">Imperial (inches, lbs)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="height">Height:</label>
+                <input type="number" class="form-control" id="height" required>
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight:</label>
+                <input type="number" class="form-control" id="weight" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+        <div id="result"></div>
+        <button id="show-history" class="btn btn-secondary mt-3">Show History</button>
+        <div id="history"></div>
+    </div>
+
+    <script>
+        document.getElementById('bmi-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const units = document.getElementById('units').value;
+            let height = document.getElementById('height').value;
+            let weight = document.getElementById('weight').value;
+
+            if (units === 'imperial') {
+                height *= 2.54; // Convert inches to cm
+                weight *= 0.453592; // Convert lbs to kg
+            }
+
+            fetch('/bmicalculator', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ age, gender, height, weight })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.className = '';
+                resultDiv.innerHTML = `<p>Your BMI is ${data.bmi} (${data.message})</p>`;
+                if (data.message === 'Underweight') resultDiv.classList.add('result-underweight');
+                else if (data.message === 'Normal weight') resultDiv.classList.add('result-normal');
+                else if (data.message === 'Overweight') resultDiv.classList.add('result-overweight');
+                else resultDiv.classList.add('result-obesity');
+            });
+        });
+        document.getElementById('show-history').addEventListener('click', () => {
+            fetch('/bmi-history')
+                .then(response => response.json())
+                .then(data => {
+                    const historyDiv = document.getElementById('history');
+                    historyDiv.innerHTML = '<h3>History:</h3>';
+                    data.forEach(entry => {
+                        historyDiv.innerHTML += `
+                            <p>
+                                Date: ${entry.timestamp}<br>
+                                BMI: ${entry.bmi} (${entry.message})<br>
+                                Age: ${entry.age}, Gender: ${entry.gender}
+                            </p>
+                            <hr>
+                        `;
+                    });
+                })
+                .catch(error => console.error('Error fetching history:', error));
+        });
+
+    </script>
+</body>
+</html>
