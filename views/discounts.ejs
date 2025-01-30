@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming News</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/discount.css">
+    <link rel="stylesheet" href="css/pink.css">
+</head>
+<body>
+<link rel="stylesheet" href="css/discount.css">
+<%- include('bloks/nav') -%>
+<h1>Current Steam Discounts</h1>
+<form method="get" action="/discounts" class="search-form">
+    <input type="text" name="search" placeholder="Search for a game..." value="<%= searchQuery %>" />
+    <button type="submit">Search</button>
+</form>
+<div class="discounts">
+  <% if (discounts.length > 0) { %>
+    <% discounts.forEach(discount => { %>
+      <div class="discount-item">
+        <img src="<%= discount.imageUrl %>" alt="<%= discount.name %>">
+        <h3><%= discount.name %></h3>
+        <p>Original Price: <%= discount.originalPrice %> тг</p>
+        <p>Final Price: <%= discount.finalPrice %> тг</p>
+        <p>Discount: <%= discount.discountPercent %>%</p>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p><%= error %></p>
+  <% } %>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

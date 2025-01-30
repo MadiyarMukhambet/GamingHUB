@@ -1,0 +1,104 @@
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0d0d0d;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure page takes full viewport height */
+  }
+  
+  /* Main content */
+  main {
+    flex: 1; /* Allow main content to take available space */
+    /*max-width: 800px;  Remove or adjust the max-width */
+    width: 90%; /* Set a percentage-based width */
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border: 1px solid #ff1493;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(255, 20, 147, 0.4);
+  }
+  
+  h1 {
+    color: #ff1493;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Form */
+  form {
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ff1493;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ff1493;
+    border-radius: 5px;
+    background-color: #0d0d0d;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  button[type="submit"] {
+    background-color: #ff1493;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #e01383;
+  }
+  
+  /* Cancel button */
+  .btn {
+    display: inline-block;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #1e1e1e;
+    border-top: 2px solid #ff1493;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: auto; /* Push footer to the bottom */
+  }
+  
+  footer p {
+    color: #ccc;
+    font-size: 14px;
+  }

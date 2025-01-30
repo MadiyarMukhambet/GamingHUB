@@ -1,0 +1,132 @@
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0d0d0d;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    color: #ff1493;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  /* Search Form */
+  .search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 0 20px; /* Add some padding for smaller screens */
+  }
+  
+  .search-form input[type="text"] {
+    width: 100%;
+    max-width: 400px; /* Limit the width of the search bar */
+    padding: 10px 15px;
+    border: 1px solid #ff1493;
+    border-radius: 20px 0 0 20px;
+    background-color: #1e1e1e;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .search-form button {
+    background-color: #ff1493;
+    color: #fff;
+    border: none;
+    border-radius: 0 20px 20px 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-form button:hover {
+    background-color: #e01383;
+  }
+  
+  /* Discounts Container */
+  .discounts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0 20px; /* Add some padding for smaller screens */
+  }
+  
+  /* Discount Item */
+  .discount-item {
+    background-color: #1e1e1e;
+    border: 1px solid #ff1493;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(255, 20, 147, 0.4);
+    padding: 20px;
+    text-align: center;
+    width: 100%; /* Full width on small screens */
+    max-width: 280px; /* Limit width on larger screens */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions */
+  }
+  
+  .discount-item:hover {
+    transform: translateY(-5px); /* Lift the card on hover */
+    box-shadow: 0 6px 12px rgba(255, 20, 147, 0.6);
+  }
+  
+  .discount-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .discount-item h3 {
+    color: #ff1493;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .discount-item p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+  
+  /* Original and Final Price Styling */
+  .discount-item p:nth-child(3) { /* Original Price */
+    text-decoration: line-through;
+    color: #999;
+  }
+  
+  .discount-item p:nth-child(4) { /* Final Price */
+    font-weight: bold;
+    color: #ff1493;
+    font-size: 16px;
+  }
+  
+  /* Error Message */
+  .discounts p {
+    color: #ff1493;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 500px) {
+    .discount-item {
+      width: calc(50% - 40px); /* Two items per row */
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .discount-item {
+      width: calc(33.333% - 40px); /* Three items per row */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .discount-item {
+      width: calc(25% - 40px); /* Four items per row */
+    }
+  }

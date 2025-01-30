@@ -1,0 +1,103 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0d0d0d;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    color: #ff1493;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border: 1px solid #ff1493;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(255, 20, 147, 0.4);
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ff1493;
+  }
+  
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ff1493;
+    border-radius: 5px;
+    background-color: #0d0d0d;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  select {
+    cursor: pointer;
+  }
+  
+  button[type="submit"] {
+    background-color: #ff1493;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #e01383;
+  }
+  
+  #inventory {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border: 1px solid #ff1493;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(255, 20, 147, 0.4);
+  }
+  
+  #inventory h2 {
+    color: #ff1493;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  #inventory ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #inventory li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #333;
+  }
+  
+  #inventory img {
+    margin-right: 15px;
+    border-radius: 5px;
+  }
+  
+  #inventory strong {
+    color: #ff1493;
+  }
+  
+  #inventory p {
+    text-align: center;
+    margin-top: 20px;
+  }

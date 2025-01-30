@@ -3,7 +3,6 @@
 </head>
 <body>
     <%- include('bloks/nav') -%>
-
     <!-- Main Content -->
     <div class="container">
         <h1 class="mt-4">Games List</h1>
@@ -13,14 +12,21 @@
             <input type="text" id="gameSearch" class="form-control" placeholder="Enter the name of the game">
             <button id="searchButton" class="btn btn-primary mt-2">Искать</button>
         </div>
-
-        <!-- Games -->
         <div id="games" class="row mt-4">
             <!-- Игры будут отображаться здесь -->
         </div>
     </div>
-
+    <!-- Chart Section -->
+    <div class="mt-5">
+        <h1>Game Ratings Visualization</h1>
+        <canvas id="gamesChart" width="400" height="200"></canvas>
+    </div>
+    <button id="viewHistoryButton" class="btn btn-primary mt-2">View History</button>
+    <button id="downloadHistoryButton" class="btn btn-primary mt-2">Download History</button>
+        <div id="historyContainer"></div>
     <%- include('bloks/footer') -%>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="/js/games.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History</title>
+  <link rel="stylesheet" href="css/inventory.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/pink.css">
+  <link rel="stylesheet" href="css/history.css">
+</head>
+<body>
+  <%- include('bloks/nav') -%>
+<h1>API Request History</h1>
+<div class="history">
+  <% if (history.length > 0) { %>
+    <% history.forEach(entry => { %>
+      <div class="history-item">
+        <p><strong>API:</strong> <%= entry.api %></p>
+        <p><strong>Endpoint:</strong> <%= entry.endpoint %></p>
+        <p><strong>Timestamp:</strong> <%= new Date(entry.timestamp).toLocaleString() %></p>
+        <p><strong>Request:</strong> <%= JSON.stringify(entry.request) %></p>
+        <p><strong>Response:</strong></p>
+        <ul>
+          <% entry.response.forEach(item => { %>
+            <li><%= item.name %> - Discount: <%= item.discountPercent %>%</li>
+          <% }) %>
+        </ul>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p>No history available.</p>
+  <% } %>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
