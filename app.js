@@ -9,7 +9,7 @@ const methodOverride = require('method-override');
 const historyRoutes = require('./routes/History');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.set('trust proxy', 1);
 // Routes
 const gameRoutes = require('./routes/gameRoutes');
 const platfRoutes = require('./routes/platfRoutes');
@@ -28,9 +28,14 @@ mongoose.connect(mongo_connect, { useNewUrlParser: true, useUnifiedTopology: tru
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({
-  secret: 'your-secret-key', // Replace with a strong secret key
+  secret: 'MadiyarMukhambet', 
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false, 
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', 
+    sameSite: 'lax', 
+    maxAge: 1000 * 60 * 60 * 24 
+  }
 }));
 app.use(methodOverride('_method'));
 

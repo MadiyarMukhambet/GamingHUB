@@ -233,4 +233,3 @@ downloadHistoryButton.addEventListener('click', downloadSearchHistory);
 document.addEventListener("DOMContentLoaded", () => {
     fetchGames(); // Load games by default
 });
-
