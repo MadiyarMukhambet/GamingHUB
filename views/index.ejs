@@ -1,105 +1,102 @@
 <%- include('bloks/header') -%>
 </head>
 <body>
-    <%- include('bloks/nav') -%>
-    <div class="container mt-4">
-        <h1 class="text-center">Latest Gaming News</h1>
+  <%- include('bloks/nav') -%>
+  <div class="container mt-4">
+    <h1 class="text-center">Latest Gaming News</h1>
 
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card news-card">
-                    <img src="img/steam.jpg" class="card-img-top" alt="News Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Another Steam record: more than 18 thousand games were added to the store in a year</h5>
-                        <p class="card-text">Valve's digital store continues to break its own records year after year. According to data from SteamDB, users downloaded 18,825 video games in 2024, up 24% from the previous year.</p>
-                        <a href="#" class="btn">Read More</a>
-                        <div class="comments-section">
-                            <h6>Comments</h6>
-                            <ul class="list-unstyled">
-                                <li><strong>User1:</strong> Great article!</li>
-                                <li><strong>User2:</strong> Can't wait to try new games.</li>
-                            </ul>
-                            <form>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" placeholder="Add a comment">
-                                </div>
-                                <button type="submit" class="btn btn-sm">Post Comment</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card news-card">
-                    <img src="img/nier.png" class="card-img-top" alt="News Image">
-                    <div class="card-body">
-                        <h5 class="card-title">NieR: Automata has surpassed 9 million copies sold</h5>
-                        <p class="card-text">By the end of the year, Square Enix and PlatinumGames employees shared updated figures for NieR: Automata. According to statistics, the developers have managed to sell over 9 million copies of the game over the entire period. The calculation takes into account both physical sales and digital circulation.</p>
-                        <a href="#" class="btn">Read More</a>
-                        <div class="comments-section">
-                            <h6>Comments</h6>
-                            <ul class="list-unstyled">
-                                <li><strong>User3:</strong> This looks amazing!</li>
-                                <li><strong>User4:</strong> Thanks for the review.</li>
-                            </ul>
-                            <form>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" placeholder="Add a comment">
-                                </div>
-                                <button type="submit" class="btn btn-sm">Post Comment</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card news-card">
-                    <img src="img/Dreadout.jpg" class="card-img-top" alt="News Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Indonesian Horror DreadOut Coming to PS5 and Switch in January</h5>
-                        <p class="card-text">Soft Source Publishing and Indonesian studio Digital Happiness have announced that the DreadOut Remastered Collection will launch on January 16 on PlayStation 5 and Switch.</p>
-                        <a href="#" class="btn">Read More</a>
-                        <div class="comments-section">
-                            <h6>Comments</h6>
-                            <ul class="list-unstyled">
-                                <li><strong>User5:</strong> This is very helpful!</li>
-                            </ul>
-                            <form>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" placeholder="Add a comment">
-                                </div>
-                                <button type="submit" class="btn btn-sm">Post Comment</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="popular-titles">
-                    <h5>Popular Titles This Month</h5>
-                    <ul>
-                        <li>
-                            <a href="https://www.game.co.uk/blog/most-anticipated-games-2024#:~:text=The%2010%20Most%20Anticipated%20Games%20of%202024%201,8.%20Dragon%27s%20Dogma%202%20%288.8%25%29%20...%20%D0%94%D1%80%D1%83%D0%B3%D0%B8%D0%B5%20%D1%8D%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%D1%8B" style="color: #ffffff;">Most Anticipated Game of 2024</a>
-                        </li>
-                        <li>
-                            <a href="https://www.pcgamer.com/best-gaming-laptop/" style="color: #ffffff;">Top 10 Gaming Laptops</a>
-                        </li>
-                        <li>
-                            <a href="https://www.polygon.com/elden-ring-guide-walkthrough/24173795/elden-beast-boss-fight-how-to-beat" style="color: #ffffff;">Guide to Beat the Final Boss</a>
-                        </li>
-                        <li>
-                            <a href="https://gaming.lenovo.com/news/post/exclusive-interview---generation-zero-05hXXM0QmWFSfdv" style="color: #ffffff;">Exclusive Interview with Game Developer</a>
-                        </li>
-                        <li>
-                            <a href="https://www.gameffine.com/get-ready-for-2025-the-pc-game-releases-you-need-to-know-about/" style="color: #ffffff;">Upcoming Game Releases You Can't Miss</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <!-- Блок для смены языка отображения -->
+    <div class="mb-4 text-center">
+      <% if (language === 'english') { %>
+        <a href="/change-language" class="btn btn-outline-primary">Switch to Russian</a>
+      <% } else { %>
+        <a href="/change-language" class="btn btn-outline-primary">Switch to English</a>
+      <% } %>
     </div>
 
-    <%- include('bloks/footer') -%>
+    <div class="row">
+      <!-- Левая колонка: специальный блок для новых постов (элементов) -->
+      <div class="col-md-8">
+        <% if (items && items.length > 0) { %>
+          <% items.forEach(item => { %>
+            <div class="card mb-4 news-card">
+              <!-- Карусель с уникальным ID для каждого элемента -->
+              <div id="carousel-<%= item._id %>" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <% item.images.forEach((img, index) => { %>
+                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                      <img src="<%= img %>" class="d-block w-100" alt="Image <%= index + 1 %>">
+                    </div>
+                  <% }); %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= item._id %>" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= item._id %>" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+              <div class="card-body">
+                <!-- Отображение названий и описаний в зависимости от выбранного языка -->
+                <% if (language === 'english') { %>
+                  <h5 class="card-title"><%= item.name_en %></h5>
+                  <p class="card-text"><%= item.description_en %></p>
+                <% } else { %>
+                  <h5 class="card-title"><%= item.name_ru %></h5>
+                  <p class="card-text"><%= item.description_ru %></p>
+                <% } %>
+                <small class="text-muted">
+                  Created: <%= item.createdAt.toLocaleString() %><br>
+                  Updated: <%= item.updatedAt.toLocaleString() %>
+                  <% if (item.deletedAt) { %>
+                    <br>Deleted: <%= item.deletedAt.toLocaleString() %>
+                  <% } %>
+                </small>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p class="text-center">No posts available.</p>
+        <% } %>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Правая колонка: популярные заголовки (без изменений) -->
+      <div class="col-md-4">
+        <div class="popular-titles">
+          <h5>Popular Titles This Month</h5>
+          <ul>
+            <li>
+              <a href="https://www.game.co.uk/blog/most-anticipated-games-2024#:~:text=The%2010%20Most%20Anticipated%20Games%20of%202024%201,8.%20Dragon%27s%20Dogma%202%20%288.8%25%29%20...%20%D0%94%D1%80%D1%83%D0%B3%D0%B8%D0%B5%20%D1%8D%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%D1%8B" style="color: #ffffff;">Most Anticipated Game of 2024</a>
+            </li>
+            <li>
+              <a href="https://www.pcgamer.com/best-gaming-laptop/" style="color: #ffffff;">Top 10 Gaming Laptops</a>
+            </li>
+            <li>
+              <a href="https://www.polygon.com/elden-ring-guide-walkthrough/24173795/elden-beast-boss-fight-how-to-beat" style="color: #ffffff;">Guide to Beat the Final Boss</a>
+            </li>
+            <li>
+              <a href="https://gaming.lenovo.com/news/post/exclusive-interview---generation-zero-05hXXM0QmWFSfdv" style="color: #ffffff;">Exclusive Interview with Game Developer</a>
+            </li>
+            <li>
+              <a href="https://www.gameffine.com/get-ready-for-2025-the-pc-game-releases-you-need-to-know-about/" style="color: #ffffff;">Upcoming Game Releases You Can't Miss</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Стили для ограничения размеров изображений в карусели -->
+  <style>
+    .carousel-item img {
+      max-height: 550px;
+      object-fit: cover;
+    }
+  </style>
+
+  <%- include('bloks/footer') -%>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

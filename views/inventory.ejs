@@ -1,43 +1,77 @@
-<%- include('bloks/header') -%>
-  <link rel="stylesheet" href="css/inventory.css">
+<!DOCTYPE html>
+<html lang="<%= language %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming News</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/discount.css">
+    <link rel="stylesheet" href="css/pink.css">
+     <link rel="stylesheet" href="css/inventory.css">
+    <%- include('bloks/header') -%>
+
 </head>
 <body>
-  <%- include('bloks/nav') -%>
-  <h1>Check Your Steam Inventory</h1>
+    <%- include('bloks/nav') -%>
 
-  <!-- Форма для ввода Steam ID и выбора игры -->
-  <form action="/inventory" method="POST">
-    <label for="steamId">Enter your Steam ID:</label>
-    <input type="text" id="steamId" name="steamId" required>
+    <div class="d-flex justify-content-between align-items-center">
+     <h1>Check Your Steam Inventory</h1>
+      <a href="/change-language" class="btn btn-secondary">
+        <%= language === 'russian' ? 'English' : 'Русский' %>
+      </a>
+    </div>
 
-    <label for="game">Choose a game:</label>
-    <select id="game" name="game" required>
-      <option value="730">CS:GO</option>
-      <option value="570">Dota 2</option>
-      <option value="440">Team Fortress 2</option>
-    </select>
+    <div class="container">
+        <form action="/inventory" method="POST" class="mb-3">
+            <div class="mb-3">
+                <label for="steamId" class="form-label">Enter your Steam ID:</label>
+                <input type="text" id="steamId" name="steamId" required class="form-control">
+            </div>
 
-    <button type="submit">Get Inventory</button>
-  </form>
+            <div class="mb-3">
+                <label for="game" class="form-label">Choose a game:</label>
+                <select id="game" name="game" required class="form-select">
+                    <option value="730">CS:GO</option>
+                    <option value="570">Dota 2</option>
+                    <option value="440">Team Fortress 2</option>
+                     <option value="252490">Rust</option>
+                    <option value="1085660">Destiny 2 </option>
+                    <option value="1172470">Apex Legends</option>
+                    <option value="271590">Grand Theft Auto V</option>
+                    <option value="230410">Warframe</option>
+                </select>
+            </div>
 
-  <!-- Вывод инвентаря -->
-  <div id="inventory">
-    <% if (items && items.length > 0) { %>
-      <h2>Your Inventory:</h2>
-      <ul>
-        <% items.forEach(item => { %>
-          <li>
-            <img src="<%= item.imageUrl %>" alt="<%= item.name %>" width="50">
-            <strong><%= item.name %></strong> (<%= item.type %>)
-          </li>
-        <% }) %>
-      </ul>
-    <% } else if (error) { %>
-      <p style="color: red;"><%= error %></p>
-    <% } else { %>
-      <p>No inventory found yet. Enter your Steam ID to see your items.</p>
-    <% } %>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <button type="submit" class="btn btn-primary">Get Inventory</button>
+        </form>
+
+        <div id="inventory">
+            <% if (items && items.length > 0) { %>
+                <h2>Your Inventory:</h2>
+                <div class="row">
+                    <% items.forEach(item => { %>
+                        <div class="col-md-4 col-sm-6 mb-3">
+                            <div class="card">
+                                <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= item.name %></h5>
+                                    <p class="card-text"><%= item.type %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else if (error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } else { %>
+                <p>No inventory found yet. Enter your Steam ID to see your items.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

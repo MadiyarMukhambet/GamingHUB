@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add New Item</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <%- include('../bloks/nav') -%>
+  <div class="container mt-5">
+    <h1>Add New Item</h1>
+    <form action="/admin/items" method="POST">
+      <div class="mb-3">
+        <label for="images" class="form-label">Image URLs (comma-separated, exactly 3):</label>
+        <input type="text" id="images" name="images" class="form-control" placeholder="url1, url2, url3" required>
+      </div>
+      <div class="mb-3">
+        <label for="name_en" class="form-label">Name (English):</label>
+        <input type="text" id="name_en" name="name_en" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="name_ru" class="form-label">Name (Russian):</label>
+        <input type="text" id="name_ru" name="name_ru" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="description_en" class="form-label">Description (English):</label>
+        <textarea id="description_en" name="description_en" class="form-control" rows="3" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="description_ru" class="form-label">Description (Russian):</label>
+        <textarea id="description_ru" name="description_ru" class="form-control" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Item</button>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

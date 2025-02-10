@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="<%= language %>">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaming News</title>
@@ -10,28 +10,48 @@
     <link rel="stylesheet" href="css/pink.css">
 </head>
 <body>
-<link rel="stylesheet" href="css/discount.css">
 <%- include('bloks/nav') -%>
-<h1>Current Steam Discounts</h1>
+
+<h1>Current Steam Discounts and Promotions</h1>
 <form method="get" action="/discounts" class="search-form">
     <input type="text" name="search" placeholder="Search for a game..." value="<%= searchQuery %>" />
     <button type="submit">Search</button>
+    <a href="/change-language" class="btn btn-secondary">
+      <%= language === 'russian' ? 'English' : 'Русский' %>
+    </a>
 </form>
+
 <div class="discounts">
-  <% if (discounts.length > 0) { %>
-    <% discounts.forEach(discount => { %>
-      <div class="discount-item">
-        <img src="<%= discount.imageUrl %>" alt="<%= discount.name %>">
-        <h3><%= discount.name %></h3>
-        <p>Original Price: <%= discount.originalPrice %> тг</p>
-        <p>Final Price: <%= discount.finalPrice %> тг</p>
-        <p>Discount: <%= discount.discountPercent %>%</p>
-      </div>
-    <% }) %>
-  <% } else { %>
-    <p><%= error %></p>
-  <% } %>
+    <% if (combinedDiscounts.length > 0) { %>
+        <% combinedDiscounts.forEach(item => { %>
+            <div class="discount-item">
+                <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="img-fluid"> <h3><%= item.name %></h3>
+
+                <% if (item.type === 'special' || item.type === 'dailydeal') { %>
+                    <% if (item.originalPrice !== null) { %>
+                        <p><s>Original Price: <%= item.originalPrice %> тг</s></p>
+                    <% } %>
+                    <% if (item.finalPrice !== null) { %>
+                        <p>Final Price: <%= item.finalPrice %> тг</p>
+                    <% } %>
+                    <% if (item.discountPercent) { %>
+                        <p>Discount: <%= item.discountPercent %>%</p>
+                    <% } %>
+                     <a href="https://store.steampowered.com/app/<%= item.id %>" class="btn btn-primary">View on Steam</a>
+                <% } else if (item.type === 'spotlight') { %>
+                    <% if (item.body) { %>
+                        <p><%= item.body %></p>
+                    <% } %>
+                      <a href="<%= item.url %>" class="btn btn-info">View Details</a>
+                <% } %>
+
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p><%= error %></p>
+    <% } %>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

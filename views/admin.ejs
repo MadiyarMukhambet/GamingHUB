@@ -1,68 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/pink.css">
-    <link rel="stylesheet" href="css/admin.css">
+<%- include('bloks/header') -%>
 </head>
 <body>
-    <%- include('bloks/nav') -%>
-    <div class="container mt-5">
-        <h1>Admin Panel</h1>
-        <a href="/logout" class="btn btn-secondary">Logout</a>
+  <%- include('bloks/nav') -%>
+  <div class="container mt-5">
+    <h1>Admin Panel</h1>
+    <a href="/logout" class="btn btn-secondary mb-3">Logout</a>
 
-        <h2>Add New User</h2>
-        <form action="/admin/add-user" method="POST">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="isAdmin">Admin:</label>
-                <input type="checkbox" id="isAdmin" name="isAdmin">
-            </div>
-            <button type="submit" class="btn btn-primary">Add User</button>
-        </form>
-
-        <h2>User List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Admin</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% users.forEach(user => { %>
-                    <tr>
-                        <td><%= user._id %></td> 
-                        <td><%= user.username %></td>
-                        <td><%= user.createdAt.toLocaleString() %></td> 
-                        <td><%= user.updatedAt.toLocaleString() %></td> 
-                        <td><%= user.isAdmin ? 'Yes' : 'No' %></td>
-                        <td>
-                            <form action="/admin/delete-user/<%= user._id %>?_method=DELETE" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                            <a href="/admin/edit-user/<%= user._id %>" class="btn btn-warning">Edit</a>
-                        </td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
+    <!-- Блок навигации для CRUD элементов -->
+    <div class="mb-4">
+      <h2>Manage Items</h2>
+      <a href="/admin/items/new" class="btn btn-primary me-2">Add New Item</a>
+      <a href="/admin/items" class="btn btn-info">Item List</a>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Если шаблон передаёт список пользователей (для user CRUD), можно оставить его ниже, иначе удалите этот блок -->
+    <% if (typeof users !== 'undefined') { %>
+      <h2>User List</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Admin</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <td><%= user._id %></td> 
+              <td><%= user.username %></td>
+              <td><%= user.createdAt.toLocaleString() %></td> 
+              <td><%= user.updatedAt.toLocaleString() %></td> 
+              <td><%= user.isAdmin ? 'Yes' : 'No' %></td>
+              <td>
+                <form action="/admin/delete-user/<%= user._id %>?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                <a href="/admin/edit-user/<%= user._id %>" class="btn btn-warning btn-sm">Edit</a>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+
+    <!-- Если передаётся список элементов (items) для CRUD элементов, можно вывести его здесь -->
+    <% if (typeof items !== 'undefined') { %>
+      <h2>Item List</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Item ID</th>
+            <th>Name (EN)</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% items.forEach(item => { %>
+            <tr>
+              <td><%= item._id %></td>
+              <td><%= item.name_en %></td>
+              <td><%= item.createdAt.toLocaleString() %></td>
+              <td><%= item.updatedAt.toLocaleString() %></td>
+              <td>
+                <a href="/admin/items/<%= item._id %>/edit" class="btn btn-warning btn-sm me-1">Edit</a>
+                <form action="/admin/items/<%= item._id %>?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
