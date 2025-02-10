@@ -1,129 +1,175 @@
 # Gaming World Project
-
+Admin accounts: Madiyar, Danel, Madi
+Passwords: admin 
 ## Overview
-Gaming World is a web-based platform designed to deliver the latest gaming news, reviews, and tools such as a BMI calculator. The project utilizes a combination of modern web technologies to create an engaging user experience.
+Gaming World is a web-based platform designed to deliver the latest gaming news, reviews, and tools to gamers. The project utilizes modern web technologies to provide an engaging user experience and includes an admin panel for managing content.
 
 ## Features
-1. **News Section**: Display of the latest gaming news articles with interactive comments.
-2. **BMI Calculator**: A tool to calculate BMI with a history feature for tracking past calculations.
-3. **Upcoming Games and Popular Titles**: Sections showcasing anticipated games and top titles.
-4. **Responsive Design**: Optimized for various devices using Bootstrap.
+1. **News Section**:  
+   - Displays the latest gaming news articles.
+   - News posts are shown as interactive cards featuring a Bootstrap carousel for images, along with titles and descriptions in two languages.
+2. **Admin Panel (CRUD for Items)**:  
+   Administrators can manage news posts (items) through the admin panel:
+   - **Create**:  
+     - Navigate to `/admin/items/new` to access a form for creating a new item.
+     - The form collects 3 image URLs, two titles (e.g., English and Russian), and two descriptions.
+     - Upon submission, a POST request is sent to `/admin/items` to create and save the new item.
+   - **Read**:  
+     - View a list of items at `/admin/items`. Only items that have not been soft-deleted (i.e., where `deletedAt` is null) are displayed.
+   - **Update**:  
+     - Each item in the list includes an "Edit" button. Clicking it navigates to `/admin/items/:id/edit`, where the form is pre-populated with the current item data.
+     - After editing, a PUT request is sent to `/admin/items/:id` to update the item.
+   - **Delete**:  
+     - Each item also has a "Delete" button. When pressed, a DELETE request is sent to `/admin/items/:id`.
+     - Instead of physically removing the item, a soft delete is performed by setting a `deletedAt` timestamp.
+
+3. **Localization**:  
+   - Users can switch the display language between English and Russian via the `/change-language` route. The front-end renders titles and descriptions based on the selected language.
+
+4. **Additional Tools & APIs**:  
+   - **BMI Calculator**: Calculate Body Mass Index (BMI) with history tracking.
+   - **Weather API (Danel)**: Fetch current weather information for a specified city using the OpenWeather API.
+   - **Platforms API (Madi)**: Retrieve a list of available gaming platforms.
+   - **Games API (Madiyar)**: Retrieve a list of games.
+5. **Responsive Design**:  
+   - The site is optimized for various devices using Bootstrap 5.
 
 ## Technologies Used
 - **Frontend**:
   - HTML, CSS, JavaScript
   - Bootstrap 5 for responsive design
+  - EJS for templating
 - **Backend**:
   - Node.js with Express.js
+  - Mongoose for MongoDB integration
+  - Axios for external API requests
+  - express-session, method-override for middleware support
 - **Database**:
-  - JSON-based storage for BMI history (extendable to database solutions like MongoDB or PostgreSQL)
+  - MongoDB (via Mongoose)
+- **Other Dependencies**:
+  - bcryptjs for password hashing
+  - i18n for localization (if used)
+  - crypto for generating invite codes
 
 ## Project Structure
-```
-project-root/
-|-- public/
-|   |-- css/
-|   |   |-- styles.css
-|   |-- img/
-|   |   |-- steam.jpg
-|   |   |-- nier.png
-|   |   |-- dreadout.jpg
-|-- routes/
-|   |-- bmiRoutes.js
-|-- views/
-|-- app.js
-|-- package.json
-```
+GamingHUB/
+├── app.js                 # Главный файл приложения
+├── package.json           # Зависимости и скрипты
+├── .env                   # Файл переменных окружения
+├── models/
+│   ├── item.js            # Модель элемента (с полями: images, name_en, name_ru, description_en, description_ru, timestamps, deletedAt)
+│   ├── invite.js          # Модель для invite-кодов (если используется)
+│   ├── quiz.js            # Модель викторины
+│   ├── User.js            # Модель пользователя (username, password, isAdmin, createdAt, updatedAt)
+│   └── ...                # Другие модели (Inventory, History и т.д.)
+├── routes/
+│   ├── adminItems.js      # Маршруты админ-панели для элементов (CRUD)
+│   ├── gameRoutes.js      # API маршруты для игр
+│   ├── platfRoutes.js     # API маршруты для платформ
+│   ├── History.js         # Маршрут для истории API запросов
+│   └── ...                # Другие маршруты (quiz, auth, inventory, discounts, и т.д.)
+├── utils/
+│   └── i18n.js            # Файл для локализации (если используется)
+├── views/
+│   ├── index.ejs          # Главная страница с блоком новых постов (элементов) и каруселями
+│   ├── login.ejs          # Страница логина
+│   ├── register.ejs       # Страница регистрации
+│   ├── admin/
+│   │   ├── items.ejs      # Страница списка элементов (CRUD) для админов
+│   │   ├── new-item.ejs   # Форма для создания нового элемента
+│   │   └── edit-item.ejs  # Форма для редактирования элемента
+│   └── bloks/
+│       ├── header.ejs     # Общий header (включает подключение стилей, meta и т.д.)
+│       ├── nav.ejs        # Навигационное меню
+│       └── footer.ejs     # Футер
+└── public/
+    ├── css/
+    │   ├── styles.css     # Общие стили
+    │   ├── pink.css       # Дополнительная тема (pink)
+    │   └── admin.css      # Стили для админ-панели
+    └── img/               # Изображения для новостей и прочее
+
+bash
+Copy
+Edit
 
 ## Installation
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone <repository-url>
    cd project-root
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the server:
-   ```bash
-   npm start
-   ```
-4. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
+Install dependencies:
+bash
+Copy
+Edit
+npm install
+Set up environment variables: Create a .env file in the project root and add:
+env
+Copy
+Edit
+PORT=3000
+MONGO_CONNECT=<your-mongo-connection-string>
+SECRET_KEY=your-secret-key
+Start the server:
+bash
+Copy
+Edit
+npm start
+Access the application: Open your browser and navigate to http://localhost:3000
+API Endpoints
+BMI Calculator
+POST /bmicalculator
 
-## API Endpoints
-### POST `/bmicalculator`
-- **Description**: Calculate BMI based on user input.
-- **Request Body**:
-  ```json
+Description: Calculates BMI based on user input.
+Request Body:
+json
+Copy
+Edit
+{
+  "age": 25,
+  "gender": "male",
+  "height": 180,
+  "weight": 75
+}
+Response:
+json
+Copy
+Edit
+{
+  "bmi": 23.15,
+  "message": "Normal weight"
+}
+GET /bmi-history
+
+Description: Retrieves the history of BMI calculations.
+Response:
+json
+Copy
+Edit
+[
   {
-    "age": 25,
-    "gender": "male",
-    "height": 180,
-    "weight": 75
-  }
-  ```
-- **Response**:
-  ```json
-  {
+    "timestamp": "2024-12-28T10:30:00Z",
     "bmi": 23.15,
-    "message": "Normal weight"
+    "message": "Normal weight",
+    "age": 25,
+    "gender": "male"
   }
-  ```
-
-### GET `/bmi-history`
-- **Description**: Retrieve the history of BMI calculations.
-- **Response**:
-  ```json
-  [
-    {
-      "timestamp": "2024-12-28T10:30:00Z",
-      "bmi": 23.15,
-      "message": "Normal weight",
-      "age": 25,
-      "gender": "male"
-    }
-  ]
-  ```
-
-## Contribution
-Contributions are welcome! To contribute:
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Submit a pull request describing your changes.
-
-## License
-This project is licensed under the MIT License. See `LICENSE` for details.
-
-## Acknowledgments
-- Bootstrap for responsive design components.
-- Node.js and Express.js for backend development.
-- All contributors who provided feedback and inspiration for this project.
-
-## Danel
-Weather API
-
-Endpoint
-
+]
+Weather API (Danel)
 GET /api/weather
 
-Description
-
-This API fetches the current weather information for a specified city using the OpenWeather API.
-
-Query Parameters
-
-city (optional): The name of the city to get the weather for. If not provided, it defaults to Astana.
-
-Example Request
-
+Description: Fetches the current weather information for a specified city using the OpenWeather API. If no city is provided, defaults to Astana.
+Query Parameters:
+city (optional): Name of the city.
+Example Request:
+bash
+Copy
+Edit
 GET /api/weather?city=Astana
-
-Example Response
-
+Example Response:
+json
+Copy
+Edit
 {
   "coord": { "lon": 71.4278, "lat": 51.1801 },
   "weather": [
@@ -159,41 +205,51 @@ Example Response
   "name": "Astana",
   "cod": 200
 }
-
-Notes
-
-Ensure you have a valid OpenWeather API key configured in the server.
-
-The response includes detailed weather information, such as temperature, humidity, wind speed, and weather description.
-
-## Madi
-Platforms API
-
-Endpoint
-
+Platforms API (Madi)
 GET /api/platforms
 
-Description
-
-This API retrieves a list of available platforms.
-
-Example Response
-
+Description: Retrieves a list of available gaming platforms.
+Example Response:
+json
+Copy
+Edit
 [
   { "id": 1, "name": "Platform 1" },
   { "id": 2, "name": "Platform 2" }
 ]
-
-## Madiyar
-Games API
-
-Endpoint
-
+Games API (Madiyar)
 GET /api/games
 
-Description
+Description: Retrieves a list of games.
+Example Response:
+json
+Copy
+Edit
+[
+  { "id": 1, "name": "Game 1" },
+  { "id": 2, "name": "Game 2" }
+]
+Admin Panel (CRUD for Items)
+Administrators can manage news posts (items) via the admin panel. Each item includes:
 
-This API retrieves a list of games.
+Images: An array of exactly 3 image URLs (displayed as a carousel on the main page).
+Titles: Two titles for localization (e.g., English and Russian).
+Descriptions: Two descriptions for localization.
+Timestamps: Automatically managed createdAt and updatedAt, and a deletedAt field for soft deletion.
+CRUD Operations:
+Create:
+GET /admin/items/new – Displays a form for adding a new item.
+POST /admin/items – Processes the form and creates the new item in the database.
+Read:
+GET /admin/items – Displays a list of all items (excluding those with a non-null deletedAt).
+Update:
+GET /admin/items/:id/edit – Displays a form pre-populated with the item's data.
+PUT /admin/items/:id – Processes the update and saves changes.
+Delete:
+DELETE /admin/items/:id – Performs a soft delete by setting the deletedAt timestamp.
+Contribution
+Contributions are welcome! To contribute:
 
-Example Response
-
+Fork the repository.
+Create a new branch for your feature or bugfix.
+Submit a pull request describing your changes.
